@@ -1,0 +1,90 @@
+<h1>{{ title }}</h1>
+
+<form (submit)="onSubmit($event)">
+    <!-- Title -->
+    <div><label for="title">Title</label></div>
+    <div>
+        <input
+                type="text"
+                name="title"
+                id="title"
+                [(ngModel)]="event.title"
+                [disabled]="!!eventId && !isCreator"
+                placeholder="Enter event title"
+                required
+        />
+    </div>
+
+    <!-- Description -->
+    <div><label for="description">Description</label></div>
+    <div>
+    <textarea
+            name="description"
+            id="description"
+            placeholder="Enter event description"
+            required
+            [(ngModel)]="event.description"
+            [disabled]="!!eventId && !isCreator"
+    ></textarea>
+    </div>
+
+    <!-- Date -->
+    <div><label for="date">Date</label></div>
+    <div>
+        <input
+                type="date"
+                name="date"
+                id="date"
+                [(ngModel)]="event.date"
+                [disabled]="!!eventId && !isCreator"
+                required
+        />
+    </div>
+
+    <!-- Location -->
+    <div><label for="location">Location</label></div>
+    <div>
+        <input
+                type="text"
+                name="location"
+                id="location"
+                [(ngModel)]="event.location"
+                [disabled]="!!eventId && !isCreator"
+                placeholder="Enter event location"
+                required
+        />
+    </div>
+
+    <!-- Max Attendees -->
+    <div><label for="maxAttendees">Maximum Attendees</label></div>
+    <div>
+        <input
+                type="number"
+                name="maxAttendees"
+                id="maxAttendees"
+                [(ngModel)]="event.maxAttendees"
+                [disabled]="!!eventId && !isCreator"
+                placeholder="1"
+                min="1"
+                required
+        />
+    </div>
+
+    <!-- Submit -->
+    <div>
+        @if (eventId) {
+            @if (isCreator) {
+                <button type="submit">Update Event</button>
+                <button type="button" (click)="onDelete()">Delete Event</button>
+            } @else {
+                @if (isRegistered) {
+                    <button type="button" (click)="onUnregister()">Unregister</button>
+                } @else {
+                    <button type="button" (click)="onRegister()">Register</button>
+                }
+            }
+        } @else {
+            <button type="submit">Create Event</button>
+        }
+    </div>
+</form>

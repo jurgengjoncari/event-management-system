@@ -1,0 +1,44 @@
+<h1>Events</h1>
+
+<a routerLink="/events/new">Create New Event</a>
+
+@if ($events | async; as events) {
+    @for (event of events; track event._id) {
+        <article>
+            <header>
+                <h2>
+                    <a [routerLink]="['/events', event._id]">{{ event.title }}</a>
+                </h2>
+            </header>
+
+            <section>
+                <time [attr.datetime]="event.date">{{ event.date | date:'fullDate' }}</time>
+                <address>{{ event.location }}</address>
+            </section>
+
+            <section>
+                <label for="attendees">Attendees:&nbsp;</label>
+                <meter
+                        [value]="event.attendees?.length ?? 0"
+                        min="0"
+                        [attr.max]="event.maxAttendees"
+                ></meter>
+                <!-- Optional count -->
+                <!-- <span>{{ event.attendees?.length ?? 0 }} / {{ event.maxAttendees }}</span> -->
+            </section>
+
+            @if (event.description?.length) {
+                <details>
+                    <summary>More Info</summary>
+                    <p>{{ event.description }}</p>
+                    @if (event.creator) {
+                        <p>Created by: {{ event.creator.fullName || event.creator.email }}</p>
+                    }
+                </details>
+            }
+        </article>
+    }
+} @else {
+    <p>No events found.</p>
+    <pre>Try creating one with the "Create New Event" link above.</pre>
+}
